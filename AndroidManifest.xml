@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="19"
-        android:targetSdkVersion="21" />
+        android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.READ_SMS"/>
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
@@ -33,7 +33,6 @@
         </receiver>
         
         <service android:name= "com.example.hi.TTSService" >
-            
         </service>
     </application>
 

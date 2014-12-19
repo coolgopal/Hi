@@ -8,7 +8,6 @@ import android.os.IBinder;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 import android.util.Log;
-import android.widget.Toast;
 
 public class TTSService extends Service implements OnInitListener{
 
@@ -18,20 +17,23 @@ public class TTSService extends Service implements OnInitListener{
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		super.onCreate();
-		Log.e("TTSService", "in onCreate()");
+		Log.v("TTSService", "onCreate");
 		tts = new TextToSpeech(this, this);
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		// TODO Auto-generated method stub
-		
-		if(intent.getAction().equals("speak"))
+
+		if(intent == null)
+			return START_STICKY;
+			
+		String action = intent.getAction(); 
+		if(action != null && action.equals("speak"))
 		{
 			String text = intent.getStringExtra("text");
 			if (!tts.isSpeaking()) 
 			{
-				Log.e("TTSService", "Speaking...");
+				Log.v("TTSService", "Speaking...");
 				tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
 				//tts.speak(text, queueMode, params, utteranceId)
 			}
@@ -48,7 +50,7 @@ public class TTSService extends Service implements OnInitListener{
 		if (status == TextToSpeech.SUCCESS) 
 		{
 			//Toast.makeText(MainActivity.context, "TTS engine initialized successfully.", Toast.LENGTH_SHORT).show();
-			Log.e("TTSService", "TTS engine initialized successfully.");
+			Log.v("TTSService", "TTS engine initialized successfully.");
 			tts.setLanguage(Locale.getDefault());
 		}
 		else 

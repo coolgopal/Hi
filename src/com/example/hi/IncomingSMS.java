@@ -19,11 +19,11 @@ public class IncomingSMS extends BroadcastReceiver{
 		char[] stringToCharArray = new char[160];
 		stringToCharArray = number.toCharArray();
 		char[] crunchifiedStringToCharArray = new char[320];
-		for(int i = 0; i < stringToCharArray.length; i++)
+		for(int i = 0, j = 0; i < stringToCharArray.length; i++, j++)
 		{
-			crunchifiedStringToCharArray[i] = stringToCharArray[i];
-			i++;
-			crunchifiedStringToCharArray[i] = ' ';
+			crunchifiedStringToCharArray[j] = stringToCharArray[i];
+			j++;
+			crunchifiedStringToCharArray[j] = ' ';
 		}
 		
 		String crunchifiedNumber = String.valueOf(crunchifiedStringToCharArray);
@@ -54,7 +54,9 @@ public class IncomingSMS extends BroadcastReceiver{
 				
 				Intent speechServiceIntent = new Intent(context, TTSService.class);
 				speechServiceIntent.setAction("speak");
-				speechServiceIntent.putExtra("text", "Hey, You have received an SMS from " + crunchifyNumber(senderNumber) + ". " + messageBody);
+				String crunchifiedNumber = crunchifyNumber(senderNumber);
+				Log.i("SmsReceiver", "crunchifiedNumber: " + crunchifiedNumber);
+				speechServiceIntent.putExtra("text", "Hey, You have received an SMS from " + crunchifiedNumber + ". " + messageBody);
 				context.startService(speechServiceIntent);
 			}
 		}

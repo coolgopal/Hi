@@ -1,24 +1,16 @@
 package com.example.hi;
 
-import java.util.Locale;
-
-import android.os.Bundle;
 import android.app.Activity;
-import android.content.Context;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.TextToSpeech.OnInitListener;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
-import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnClickListener,
-		OnInitListener
-
+public class MainActivity extends Activity implements OnClickListener
 {
 
-	private TextToSpeech tts;
-	public static Context context;
+//	private TextToSpeech tts;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,46 +18,26 @@ public class MainActivity extends Activity implements OnClickListener,
 
 		setContentView(R.layout.activity_main);
 
-		tts = new TextToSpeech(this, this);
+		//tts = new TextToSpeech(this, this);
 		findViewById(R.id.button1).setOnClickListener(this);
-
-		context = this;
-	}
-
-	@Override
-	public void onInit(int code) {
-		if (code == TextToSpeech.SUCCESS) {
-
-			tts.setLanguage(Locale.getDefault());
-
-		} else {
-			tts = null;
-			Toast.makeText(this, "Failed to initialize TTS engine.",
-
-			Toast.LENGTH_SHORT).show();
-
-		}
+		
+		// Initialize ttsservice
+		Intent speechServiceIntent = new Intent(this, TTSService.class);
+		startService(speechServiceIntent);
 	}
 
 	@Override
 	public void onClick(View v) {
-		if (tts != null) {
 			String text =
 
 			((EditText) findViewById(R.id.editText1)).getText().toString();
-			if (text != null) {
-				if (!tts.isSpeaking()) {
-					tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
-
-				}
-
-			}
-
-		}
-
+			Intent speechServiceIntent = new Intent(this, TTSService.class);
+			speechServiceIntent.setAction("speak");
+			speechServiceIntent.putExtra("text", text);
+			startService(speechServiceIntent);
 	}
 
-	@Override
+/*	@Override
 	protected void onDestroy() {
 		if (tts != null) {
 
@@ -77,5 +49,5 @@ public class MainActivity extends Activity implements OnClickListener,
 
 		super.onDestroy();
 	}
-
+*/
 }
