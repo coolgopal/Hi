@@ -32,7 +32,7 @@ public class MainActivity extends Activity implements OnClickListener
 
 			((EditText) findViewById(R.id.editText1)).getText().toString();
 			Intent speechServiceIntent = new Intent(this, TTSService.class);
-			speechServiceIntent.setAction("speak");
+			speechServiceIntent.setAction("read");
 			speechServiceIntent.putExtra("text", text);
 			startService(speechServiceIntent);
 	}

@@ -14,21 +14,6 @@ public class IncomingSMS extends BroadcastReceiver{
 	// Get the object of SMSManager
 	final SmsManager smsMgr = SmsManager.getDefault();
 	
-	String crunchifyNumber(String number)
-	{
-		char[] stringToCharArray = new char[160];
-		stringToCharArray = number.toCharArray();
-		char[] crunchifiedStringToCharArray = new char[320];
-		for(int i = 0, j = 0; i < stringToCharArray.length; i++, j++)
-		{
-			crunchifiedStringToCharArray[j] = stringToCharArray[i];
-			j++;
-			crunchifiedStringToCharArray[j] = ' ';
-		}
-		
-		String crunchifiedNumber = String.valueOf(crunchifiedStringToCharArray);
-		return crunchifiedNumber; 
-	}
 	@Override
 	public void onReceive(Context context, Intent intent) 
 	{
@@ -53,10 +38,13 @@ public class IncomingSMS extends BroadcastReceiver{
 				toast.show();		
 				
 				Intent speechServiceIntent = new Intent(context, TTSService.class);
-				speechServiceIntent.setAction("speak");
-				String crunchifiedNumber = crunchifyNumber(senderNumber);
+				speechServiceIntent.setAction("readSMS");
+/*				String crunchifiedNumber = crunchifyNumber(senderNumber);
 				Log.i("SmsReceiver", "crunchifiedNumber: " + crunchifiedNumber);
 				speechServiceIntent.putExtra("text", "Hey, You have received an SMS from " + crunchifiedNumber + ". " + messageBody);
+*/
+				speechServiceIntent.putExtra("senderNumber", senderNumber);
+				speechServiceIntent.putExtra("messageBody", messageBody);
 				context.startService(speechServiceIntent);
 			}
 		}
